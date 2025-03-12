@@ -7,10 +7,26 @@ import random
 import string
 import numpy as np
 import matplotlib
+import sys
+sys.setrecursionlimit(10 ** 6)
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
+
 if __name__ == '__main__':
+
+    lcs_algorithms = {
+        "brute_force": lcs_brute_force,
+        "recursive": lcs_recursive,
+        "memoization": lcs_memoized,
+        "bottom_up": lcs_bottom_up
+    }
+
+    string_lengths = list(range(1, 16, 1))
+
+    num_test = 3
+
+    test_same_dimension(lcs_algorithms, string_lengths, num_test)
     lcs_algorithms = {
       "brute_force": lcs_brute_force,
       "memoization": lcs_memoized,
@@ -26,7 +42,7 @@ if __name__ == '__main__':
         "memoization": lcs_memoized,
         "bottom_up": lcs_bottom_up
     }
-    string_lengths = list(range(1, 501, 10))
+    string_lengths = list(range(1, 1001, 10))
 
     num_test = 5
 
@@ -48,17 +64,3 @@ if __name__ == '__main__':
     test_time_repeated_strings(lcs_algorithms, iterations, num_tests)
 
     test_memory_diff_lengths(lcs_algorithms, iterations, num_tests)
-
-
-"""lcs_algorithms = {
-"brute_force": lcs_brute_force,
-"recursive": lcs_recursive,
-"memoization": lcs_memoized,
-"bottom_up": lcs_bottom_up
-}
-
-string_lengths = list(range(1, 17, 1))
-
-num_test = 1
-
-test_same_dimension(lcs_algorithms, string_lengths, num_test)"""
