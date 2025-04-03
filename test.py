@@ -8,20 +8,19 @@ import timeit
 import matplotlib
 import sys
 import tracemalloc
-from tabulate import tabulate
 import numpy as np
-
+import json
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 
+def save_results_to_json(results, filename="Risultati.json"):
+    with open(filename, "w") as file:
+        json.dump(results, file, indent=4)
+
+
 def generate_random_string(length):
     x = ''.join(random.choices(string.ascii_uppercase, k=length))
-    return x
-
-
-def generate_random_string_from_alphabet(length, alphabet="ABCDEFGH"):
-    x = ''.join(random.choices(alphabet, k=length))
     return x
 
 
@@ -49,7 +48,6 @@ def measure_total_memory(lcs_func, x, y):
     return peak
 
 
-
 def test_same_dimension(lcs_algorithms, string_lengths, num_test):
     if len(string_lengths) <= 15:
         results = {"brute_force": [], "recursive": [], "memoization": [], "bottom_up": []}
@@ -70,15 +68,18 @@ def test_same_dimension(lcs_algorithms, string_lengths, num_test):
             print(f"  {name}: {avg_time:.6f} sec")
 
     if len(string_lengths) <= 15:
+        save_results_to_json(results, "Risultati_dimensione_15.json")
         result = plot_results("Confronto Algoritmi LCS", "Lunghezza stringhe (m=n)", "Tempo di Esecuzione (s)",
                               string_lengths, results["memoization"], results["bottom_up"], results["brute_force"],
                               results["recursive"])
         result.savefig("Confronto Algoritmi LCS1.png", dpi=300)
     elif len(string_lengths) <= 25:
+        save_results_to_json(results, "Risultati_dimensione_25.json")
         result = plot_results("Confronto Algoritmi LCS", "Lunghezza stringhe (m=n)", "Tempo di Esecuzione (s)",
                               string_lengths, results["memoization"], results["bottom_up"], results["brute_force"])
         result.savefig("Confronto Algoritmi LCS2.png", dpi=300)
     else:
+        save_results_to_json(results, "Risultati_dimensione_1000.json")
         result = plot_results("Confronto Algoritmi LCS", "Lunghezza stringhe (m=n)", "Tempo di Esecuzione (s)",
                               string_lengths, results["memoization"], results["bottom_up"])
         result.savefig("Confronto Algoritmi LCS3.png", dpi=300)
@@ -98,6 +99,7 @@ def test_time_diff_lengths(lcs_algorithms, iterations, num_tests, min_len=1, max
             avg_time = sum(times) / num_tests
             results[name].append(avg_time)
 
+    save_results_to_json(results, "Risultati_dimensione_diversa_tempo.json")
     print(f"\n Testing con Stringhe di lunghezza diversa...")
     print_statistics_time(results)
 
@@ -117,7 +119,8 @@ def test_time_repeated_strings(lcs_algorithms, iterations, num_tests, min_len=5,
             avg_time = sum(times) / num_tests
             results[name].append(avg_time)
 
-    print(f"\n Testing con Stringhe di lunghezza diversa...")
+    save_results_to_json(results, "Risultati_stringhe_ripetute.json")
+    print(f"\n Testing con Stringhe con sequenze ripetute...")
     print_statistics_time(results)
 
 
@@ -134,6 +137,7 @@ def test_memory_diff_lengths(lcs_algorithms, iterations, num_tests, min_len=1, m
             avg_mem = sum(mem_usage) / num_tests
             results[name].append(avg_mem)
 
+    save_results_to_json(results, "Risultati_dimensione_diversa_memoria.json")
     print_statistics_mem("Memoria totale usata", results)
 
 

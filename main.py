@@ -61,6 +61,7 @@ if __name__ == '__main__':
 
     test_time_diff_lengths(lcs_algorithms, iterations, num_tests)
 
+    test_memory_diff_lengths(lcs_algorithms, iterations, num_tests)
+
     test_time_repeated_strings(lcs_algorithms, iterations, num_tests)
 
-    test_memory_diff_lengths(lcs_algorithms, iterations, num_tests)
